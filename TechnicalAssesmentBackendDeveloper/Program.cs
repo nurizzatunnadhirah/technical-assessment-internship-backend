@@ -30,7 +30,7 @@
     }
 }
 
-public class ItemManager
+public class ItemManager : IItemManager<string>
 {
     private List<string> items= new List<string>();
 
@@ -60,7 +60,7 @@ public class ItemManager
     }
 }
 
-public class ItemManager<T>
+public class ItemManager<T> : IItemManager<T>
 {
     private List<T> items= new List<T>();
 
@@ -101,5 +101,12 @@ public void RemoveItem(T item)
     {
         return Name;
     }
+}
+public interface IItemManager<T>
+{
+    void AddItem(T item);
+    void RemoveItem(T item);
+    void PrintAllItems();
+    void ClearAllItems();
 }
 }
