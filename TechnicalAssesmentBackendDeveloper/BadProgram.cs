@@ -2,65 +2,63 @@
 
 class Booking
 {
-    public string guestname;
-    public string roomnumber;
-    public DateTime checkindate;
-    public DateTime checkoutdate;
-    public int totaldays;
-    public double rateperday;
-    public double discount;
-    public double totalamount;
+    public string GuestName;
+    public string RoomNumber;
+    public DateTime CheckInDate;
+    public DateTime CheckOutDate;
+    public int TotalDays;
+    public double RatePerDay;
+    public double Discount;
+    public double TotalAmount;
 
-    public void BookRoom(string name, string room, DateTime checkin, DateTime checkout, double rate, double discountRate)
+    public async Task BookRoom(string name, string room, DateTime checkin, DateTime checkout, double rate, double discountRate)
     {
-        guestname = name;
-        roomnumber = room;
-        checkindate = checkin;
-        checkoutdate = checkout;
-        rateperday = rate;
-        discount = discountRate;
+        GuestName = name;
+        RoomNumber = room;
+        CheckInDate = checkin;
+        CheckOutDate = checkout;
+        RatePerDay = rate;
+        Discount = discountRate;
 
-        totaldays = (checkout - checkin).Days;
-        totalamount = totaldays * rateperday;
-        totalamount = totalamount - (totalamount * discount / 100);
+        TotalDays = (checkout - checkin).Days;
+        
+        double basePrice = TotalDays * RatePerDay;
+        TotalAmount = basePrice - (basePrice * Discount / 100);
 
-        LogBookingDetailsAsync();
+        await LogBookingDetailsAsync();
 
-        Console.WriteLine("Room Booked for " + guestname);
-        Console.WriteLine("Room No: " + roomnumber);
-        Console.WriteLine("Check-In: " + checkindate.ToString());
-        Console.WriteLine("Check-Out: " + checkoutdate.ToString());
-        Console.WriteLine("Total Days: " + totaldays);
-        Console.WriteLine("Amount: " + totalamount);
+        Console.WriteLine("--- Booking Details ---");
+        Console.WriteLine("Room Booked for: " + GuestName);
+        Console.WriteLine("Room No: " + RoomNumber);
+        Console.WriteLine("Check-In: " + CheckInDate.ToShortDateString());
+        Console.WriteLine("Check-Out: " + CheckOutDate.ToShortDateString());
+        Console.WriteLine("Total Days: " + TotalDays);
+        Console.WriteLine("Total Amount: " + TotalAmount);
     }
 
     public async Task LogBookingDetailsAsync()
     {
-        // Simulate writing to a log file or remote system
         await Task.Delay(1000);
         Console.WriteLine("Booking log saved.");
     }
 
     public void Cancel()
     {
-        guestname = null;
-        roomnumber = null;
-        checkindate = DateTime.MinValue;
-        checkoutdate = DateTime.MinValue;
-        rateperday = 0;
-        discount = 0;
-        totalamount = 0;
-
+        GuestName = "";
+        RoomNumber = "";
+        TotalAmount = 0;
         Console.WriteLine("Booking cancelled");
     }
 }
 
 public static class AppHost
 {
-    static void Run(string[] args)
+    static async Task Main(string[] args)
     {
         Booking b = new Booking();
-        b.BookRoom("Alice", "101", DateTime.Now, DateTime.Now.AddDays(3), 150.5, 10);
+        
+        await b.BookRoom("Alice", "101", DateTime.Now, DateTime.Now.AddDays(3), 150.5, 10);
+        
         b.Cancel();
     }
 }
