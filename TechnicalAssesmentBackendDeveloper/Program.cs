@@ -18,6 +18,12 @@
 
         // Part Three: Introduce a Fruit class and use the ItemManager<Fruit> to add a few fruits and print them on the console.
         // TODO: Implement this part three.
+        fruitManager.AddItem(new Fruit("Apple"));
+        fruitManager.AddItem(new Fruit("Banana"));
+        fruitManager.AddItem(new Fruit("Cherry"));
+
+        Console.WriteLine("\nPrinting list of fruits:");
+        fruitManager.PrintAllItems();
 
         // Part Four (Bonus): Implement an interface IItemManager and make ItemManager implement it.
         // TODO: Implement this part four.
@@ -67,7 +73,7 @@ public void RemoveItem(T item)
     {
         items.Remove(item);
     }
-    
+
     public void PrintAllItems()
     {
         foreach (var item in items)
@@ -80,4 +86,20 @@ public void RemoveItem(T item)
     {
         items = [];
     }
+
+    public class Fruit
+{
+    public string Name { get; set; }
+
+    public Fruit(string name)
+    {
+        Name = name;
+    }
+
+    // Overriding ToString ensures the fruit name prints instead of the class name
+    public override string ToString()
+    {
+        return Name;
+    }
+}
 }
